@@ -13,7 +13,7 @@
     <ProjectGuid>{E4F04DBE-3418-4D81-9429-36723E8CF596}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MunyabeCSharpAnalysis</RootNamespace>
+    <RootNamespace>Munyabe.CSharp.Analysis</RootNamespace>
     <AssemblyName>MunyabeCSharpAnalysis</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>

@@ -8,7 +8,7 @@
     <ProjectGuid>{928B730B-2B6F-433E-BA89-162F1A1867CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MunyabeCSharpAnalysis.Test</RootNamespace>
+    <RootNamespace>Munyabe.CSharp.Analysis.Test</RootNamespace>
     <AssemblyName>MunyabeCSharpAnalysis.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
