@@ -46,11 +46,11 @@ namespace AnalyzerSample.Test.Performance
                 }
             };
 
-            VerifyCSharpDiagnostic(test, expected);
+            VerifyDiagnostic(test, expected);
         }
 
         /// <inheritdoc />
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+        protected override DiagnosticAnalyzer GetDiagnosticAnalyzer()
         {
             return new AvoidEnumHasFlagAnalyzer();
         }
