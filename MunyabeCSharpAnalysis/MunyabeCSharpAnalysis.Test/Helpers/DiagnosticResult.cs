@@ -41,9 +41,9 @@ namespace TestHelper
                 throw new ArgumentOutOfRangeException(nameof(line), "column must be >= -1");
             }
 
-            this.Path = path;
-            this.Line = line;
-            this.Column = column;
+            Path = path;
+            Line = line;
+            Column = column;
         }
     }
 
@@ -52,7 +52,7 @@ namespace TestHelper
     /// </summary>
     public struct DiagnosticResult
     {
-        private DiagnosticResultLocation[] locations;
+        private DiagnosticResultLocation[] _locations;
         /// <summary>
         /// 解析結果が示すソースコードの位置を取得または設定します。
         /// </summary>
@@ -60,15 +60,15 @@ namespace TestHelper
         {
             get
             {
-                if (this.locations == null)
+                if (_locations == null)
                 {
-                    this.locations = new DiagnosticResultLocation[] { };
+                    _locations = new DiagnosticResultLocation[] { };
                 }
-                return this.locations;
+                return _locations;
             }
             set
             {
-                this.locations = value;
+                _locations = value;
             }
         }
 
@@ -94,7 +94,7 @@ namespace TestHelper
         {
             get
             {
-                return this.Locations.Length > 0 ? this.Locations[0].Path : "";
+                return Locations.Length > 0 ? Locations[0].Path : "";
             }
         }
 
@@ -105,7 +105,7 @@ namespace TestHelper
         {
             get
             {
-                return this.Locations.Length > 0 ? this.Locations[0].Column : -1;
+                return Locations.Length > 0 ? Locations[0].Column : -1;
             }
         }
 
@@ -116,7 +116,7 @@ namespace TestHelper
         {
             get
             {
-                return this.Locations.Length > 0 ? this.Locations[0].Line : -1;
+                return Locations.Length > 0 ? Locations[0].Line : -1;
             }
         }
     }
