@@ -62,14 +62,14 @@ namespace TestHelper
         /// <param name="actualResults">The Diagnostics found by the compiler after running the analyzer on the source code</param>
         /// <param name="analyzer">The analyzer that was being run on the sources</param>
         /// <param name="expectedResults">Diagnostic Results that should have appeared in the code</param>
-        private static void VerifyDiagnosticResults(IEnumerable<Diagnostic> actualResults, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expectedResults)
+        private static void VerifyDiagnosticResults(Diagnostic[] actualResults, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expectedResults)
         {
-            int expectedCount = expectedResults.Count();
-            int actualCount = actualResults.Count();
+            int expectedCount = expectedResults.Length;
+            int actualCount = actualResults.Length;
 
             if (expectedCount != actualCount)
             {
-                string diagnosticsOutput = actualResults.Any() ? FormatDiagnostics(analyzer, actualResults.ToArray()) : "    NONE.";
+                string diagnosticsOutput = actualResults.Any() ? FormatDiagnostics(analyzer, actualResults) : "    NONE.";
 
                 Assert.IsTrue(false,
                     string.Format("Mismatch between number of diagnostics returned, expected \"{0}\" actual \"{1}\"\r\n\r\nDiagnostics:\r\n{2}\r\n", expectedCount, actualCount, diagnosticsOutput));
@@ -77,7 +77,7 @@ namespace TestHelper
 
             for (int i = 0; i < expectedResults.Length; i++)
             {
-                var actual = actualResults.ElementAt(i);
+                var actual = actualResults[i];
                 var expected = expectedResults[i];
 
                 if (expected.Line == -1 && expected.Column == -1)
@@ -92,17 +92,17 @@ namespace TestHelper
                 else
                 {
                     VerifyDiagnosticLocation(analyzer, actual, actual.Location, expected.Locations.First());
-                    var additionalLocations = actual.AdditionalLocations.ToArray();
+                    var additionalLocations = actual.AdditionalLocations;
 
-                    if (additionalLocations.Length != expected.Locations.Length - 1)
+                    if (additionalLocations.Count != expected.Locations.Length - 1)
                     {
                         Assert.IsTrue(false,
                             string.Format("Expected {0} additional locations but got {1} for Diagnostic:\r\n    {2}\r\n",
-                                expected.Locations.Length - 1, additionalLocations.Length,
+                                expected.Locations.Length - 1, additionalLocations.Count,
                                 FormatDiagnostics(analyzer, actual)));
                     }
 
-                    for (int j = 0; j < additionalLocations.Length; ++j)
+                    for (int j = 0; j < additionalLocations.Count; ++j)
                     {
                         VerifyDiagnosticLocation(analyzer, actual, additionalLocations[j], expected.Locations[j + 1]);
                     }
