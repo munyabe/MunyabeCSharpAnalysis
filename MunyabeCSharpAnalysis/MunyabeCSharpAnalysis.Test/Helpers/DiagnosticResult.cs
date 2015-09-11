@@ -66,26 +66,22 @@ namespace TestHelper
                 }
                 return _locations;
             }
-            set
-            {
-                _locations = value;
-            }
         }
 
         /// <summary>
         /// 解析したルールの重大度を取得または設定します。
         /// </summary>
-        public DiagnosticSeverity Severity { get; set; }
+        public DiagnosticSeverity Severity { get; }
 
         /// <summary>
         /// 解析したルールの識別子を取得または設定します。
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; }
 
         /// <summary>
         /// 解析結果のメッセージを取得または設定します。
         /// </summary>
-        public string Message { get; set; }
+        public string Message { get; }
 
         /// <summary>
         /// 解析対象のファイルパスを取得します。
@@ -118,6 +114,21 @@ namespace TestHelper
             {
                 return Locations.Length > 0 ? Locations[0].Line : -1;
             }
+        }
+
+        /// <summary>
+        /// インスタンスを初期化します。
+        /// </summary>
+        /// <param name="id">解析したルールの識別子</param>
+        /// <param name="message">解析結果のメッセージ</param>
+        /// <param name="severity">解析したルールの重大度</param>
+        /// <param name="locations">解析結果が示すソースコードの位置</param>
+        public DiagnosticResult(string id, string message, DiagnosticSeverity severity, DiagnosticResultLocation[] locations)
+        {
+            Id = id;
+            Message = message;
+            Severity = severity;
+            _locations = locations;
         }
     }
 }

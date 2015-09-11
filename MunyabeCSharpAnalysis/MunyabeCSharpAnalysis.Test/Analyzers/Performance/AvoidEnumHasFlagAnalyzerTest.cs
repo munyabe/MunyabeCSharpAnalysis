@@ -35,16 +35,11 @@ namespace AnalyzerSample.Test.Performance
     }
 }";
 
-            var expected = new DiagnosticResult
-            {
-                Id = AvoidEnumHasFlagAnalyzer.DiagnosticId,
-                Message = string.Format("Avoid Enum.HasFlag prefer bit operator"),
-                Severity = DiagnosticSeverity.Warning,
-                Locations = new[]
-                {
-                    new DiagnosticResultLocation("Test0.cs", 9, 20)
-                }
-            };
+            var expected = new DiagnosticResult(
+                AvoidEnumHasFlagAnalyzer.DiagnosticId,
+                "Avoid Enum.HasFlag prefer bit operator",
+                DiagnosticSeverity.Warning,
+                new[] { new DiagnosticResultLocation("Test0.cs", 9, 20) });
 
             VerifyDiagnostic(test, expected);
         }
