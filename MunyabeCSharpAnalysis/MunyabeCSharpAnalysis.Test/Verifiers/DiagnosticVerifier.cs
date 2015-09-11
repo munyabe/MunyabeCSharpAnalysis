@@ -12,7 +12,6 @@ namespace TestHelper
     /// </summary>
     public abstract partial class DiagnosticVerifier
     {
-        #region To be implemented by Test classes
         /// <summary>
         /// Get the CSharp analyzer being tested - to be implemented in non-abstract class
         /// </summary>
@@ -20,9 +19,6 @@ namespace TestHelper
         {
             return null;
         }
-        #endregion
-
-        #region Verifier wrappers
 
         /// <summary>
         /// Called to test a C# DiagnosticAnalyzer when applied on the single inputted string as a source
@@ -59,9 +55,6 @@ namespace TestHelper
             VerifyDiagnosticResults(diagnostics, analyzer, expected);
         }
 
-        #endregion
-
-        #region Actual comparisons and verifications
         /// <summary>
         /// Checks each of the actual Diagnostics found and compares them with the corresponding DiagnosticResult in the array of expected results.
         /// Diagnostics are considered equal only if the DiagnosticResultLocation, Id, Severity, and Message of the DiagnosticResult match the actual diagnostic.
@@ -177,9 +170,7 @@ namespace TestHelper
                 }
             }
         }
-        #endregion
 
-        #region Formatting Diagnostics
         /// <summary>
         /// Helper method to format a Diagnostic into an easily readable string
         /// </summary>
@@ -232,6 +223,5 @@ namespace TestHelper
             }
             return builder.ToString();
         }
-        #endregion
     }
 }
