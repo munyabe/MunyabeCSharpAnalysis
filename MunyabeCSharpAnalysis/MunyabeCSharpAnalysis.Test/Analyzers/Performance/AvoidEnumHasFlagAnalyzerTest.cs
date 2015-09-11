@@ -39,7 +39,7 @@ namespace AnalyzerSample.Test.Performance
                 AvoidEnumHasFlagAnalyzer.DiagnosticId,
                 "Avoid Enum.HasFlag prefer bit operator",
                 DiagnosticSeverity.Warning,
-                new[] { new DiagnosticResultLocation("Test0.cs", 9, 20) });
+                new DiagnosticResultLocation("Test0.cs", 9, 20));
 
             VerifyDiagnostic(test, expected);
         }

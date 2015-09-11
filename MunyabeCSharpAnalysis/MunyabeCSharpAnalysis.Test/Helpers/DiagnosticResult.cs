@@ -54,7 +54,7 @@ namespace TestHelper
     {
         private DiagnosticResultLocation[] _locations;
         /// <summary>
-        /// 解析結果が示すソースコードの位置を取得または設定します。
+        /// 解析結果が示すソースコードの位置を取得します。
         /// </summary>
         public DiagnosticResultLocation[] Locations
         {
@@ -69,17 +69,17 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// 解析したルールの重大度を取得または設定します。
+        /// 解析したルールの重大度を取得します。
         /// </summary>
         public DiagnosticSeverity Severity { get; }
 
         /// <summary>
-        /// 解析したルールの識別子を取得または設定します。
+        /// 解析したルールの識別子を取得します。
         /// </summary>
         public string Id { get; }
 
         /// <summary>
-        /// 解析結果のメッセージを取得または設定します。
+        /// 解析結果のメッセージを取得します。
         /// </summary>
         public string Message { get; }
 
