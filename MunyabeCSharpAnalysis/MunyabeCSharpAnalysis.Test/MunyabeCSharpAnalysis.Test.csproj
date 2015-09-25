@@ -105,10 +105,10 @@
     <Compile Include="Analyzers\Performance\AvoidEnumHasFlagAnalyzerTest.cs" />
     <Compile Include="Verifiers\CodeFixVerifier.cs" />
     <Compile Include="Verifiers\DiagnosticVerifier.cs" />
-    <Compile Include="Helpers\CodeFixVerifier.Helper.cs" />
     <Compile Include="Helpers\DiagnosticResult.cs" />
     <Compile Include="Helpers\DiagnosticVerifier.Helper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Verifiers\DocumentExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

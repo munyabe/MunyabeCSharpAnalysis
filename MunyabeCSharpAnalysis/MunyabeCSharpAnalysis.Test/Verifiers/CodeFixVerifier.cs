@@ -36,7 +36,7 @@ namespace TestHelper
 
             var document = CreateProject(new[] { oldSource }).Documents.First();
             var analyzerDiagnostics = GetSortedDiagnosticsFromDocuments(analyzer, new[] { document });
-            var compilerDiagnostics = GetCompilerDiagnostics(document);
+            var compilerDiagnostics = document.GetCompilerDiagnostics();
             var attempts = analyzerDiagnostics.Length;
 
             for (int i = 0; i < attempts; ++i)
@@ -52,21 +52,21 @@ namespace TestHelper
 
                 if (codeFixIndex != null)
                 {
-                    document = ApplyFix(document, actions.ElementAt((int)codeFixIndex));
+                    document = document.ApplyFix(actions.ElementAt((int)codeFixIndex));
                     break;
                 }
 
-                document = ApplyFix(document, actions.ElementAt(0));
+                document = document.ApplyFix(actions.ElementAt(0));
                 analyzerDiagnostics = GetSortedDiagnosticsFromDocuments(analyzer, new[] { document });
 
-                var newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, GetCompilerDiagnostics(document));
+                var newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, document.GetCompilerDiagnostics());
 
                 //check if applying the code fix introduced any new compiler diagnostics
                 if (!allowNewCompilerDiagnostics && newCompilerDiagnostics.Any())
                 {
                     // Format and get the compiler diagnostics again so that the locations make sense in the output
                     document = document.WithSyntaxRoot(Formatter.Format(document.GetSyntaxRootAsync().Result, Formatter.Annotation, document.Project.Solution.Workspace));
-                    newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, GetCompilerDiagnostics(document));
+                    newCompilerDiagnostics = GetNewDiagnostics(compilerDiagnostics, document.GetCompilerDiagnostics());
 
                     Assert.IsTrue(false,
                         string.Format("Fix introduced new compiler diagnostics:\r\n{0}\r\n\r\nNew document:\r\n{1}\r\n",
@@ -82,8 +82,36 @@ namespace TestHelper
             }
 
             //after applying all of the code fixes, compare the resulting string to the inputted one
-            var actual = GetStringFromDocument(document);
+            var actual = document.GetStringFromDocument();
             Assert.AreEqual(newSource, actual);
+        }
+
+        /// <summary>
+        /// 2つの診断結果を比較して、新たに検出された診断結果を取得します。
+        /// </summary>
+        /// <param name="diagnostics">既存の診断結果</param>
+        /// <param name="newDiagnostics">新しい診断結果</param>
+        /// <returns>新たに検出された診断結果</returns>
+        private static IEnumerable<Diagnostic> GetNewDiagnostics(IEnumerable<Diagnostic> diagnostics, IEnumerable<Diagnostic> newDiagnostics)
+        {
+            var oldArray = diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
+            var newArray = newDiagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
+
+            int oldIndex = 0;
+            int newIndex = 0;
+
+            while (newIndex < newArray.Length)
+            {
+                if (oldIndex < oldArray.Length && oldArray[oldIndex].Id == newArray[newIndex].Id)
+                {
+                    ++oldIndex;
+                    ++newIndex;
+                }
+                else
+                {
+                    yield return newArray[newIndex++];
+                }
+            }
         }
     }
 }
