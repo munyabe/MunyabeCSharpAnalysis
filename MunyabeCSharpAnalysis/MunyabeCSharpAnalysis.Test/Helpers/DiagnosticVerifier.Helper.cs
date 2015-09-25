@@ -35,12 +35,11 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// Given an analyzer and a document to apply it to, run the analyzer and gather an array of diagnostics found in it.
-        /// The returned diagnostics are then ordered by location in the source document.
+        /// 指定の<see cref="DiagnosticAnalyzer"/>でドキュメントを診断した結果を取得します。
         /// </summary>
-        /// <param name="analyzer">The analyzer to run on the documents</param>
-        /// <param name="documents">The Documents that the analyzer will be run on</param>
-        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
+        /// <param name="analyzer">テスト対象の<see cref="DiagnosticAnalyzer"/></param>
+        /// <param name="documents">解析対象のドキュメント一覧</param>
+        /// <returns>ソースコードの位置でソートされた診断結果の一覧</returns>
         protected static Diagnostic[] GetSortedDiagnosticsFromDocuments(DiagnosticAnalyzer analyzer, Document[] documents)
         {
             var projects = new HashSet<Project>();
@@ -119,10 +118,10 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// Create a project using the inputted strings as sources.
+        /// 指定の C# のソースコードを含んだプロジェクトを作成します。
         /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <returns>A Project created out of the Documents created from the source strings</returns>
+        /// <param name="sources">プロジェクトに含めるソースコードの一覧</param>
+        /// <returns>作成したプロジェクト</returns>
         private static Project CreateProject(string[] sources)
         {
             string fileNamePrefix = DefaultFilePathPrefix;

@@ -8,12 +8,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestHelper
 {
     /// <summary>
-    /// Superclass of all Unit Tests for DiagnosticAnalyzers
+    /// <see cref="DiagnosticAnalyzer"/>によるコードの診断をテストする基底クラスです。
     /// </summary>
     public abstract partial class DiagnosticVerifier
     {
         /// <summary>
-        /// Get the CSharp analyzer being tested - to be implemented in non-abstract class
+        /// テスト対象の<see cref="DiagnosticAnalyzer"/>のインスタンスを取得します。
         /// </summary>
         protected virtual DiagnosticAnalyzer GetDiagnosticAnalyzer()
         {
@@ -21,34 +21,28 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// Called to test a C# DiagnosticAnalyzer when applied on the single inputted string as a source
-        /// Note: input a DiagnosticResult for each Diagnostic expected
+        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証します。
         /// </summary>
-        /// <param name="source">A class in the form of a string to run the analyzer on</param>
-        /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source</param>
+        /// <param name="source">解析対象のソースコード</param>
+        /// <param name="expected">診断結果の期待値</param>
         protected void VerifyDiagnostic(string source, params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(new[] { source }, GetDiagnosticAnalyzer(), expected);
         }
 
         /// <summary>
-        /// Called to test a C# DiagnosticAnalyzer when applied on the inputted strings as a source
-        /// Note: input a DiagnosticResult for each Diagnostic expected
+        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証します。
         /// </summary>
-        /// <param name="sources">An array of strings to create source documents from to run the analyzers on</param>
-        /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources</param>
+        /// <param name="sources">解析対象のソースコード一覧</param>
+        /// <param name="expected">診断結果の期待値</param>
         protected void VerifyDiagnostic(string[] sources, params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(sources, GetDiagnosticAnalyzer(), expected);
         }
 
         /// <summary>
-        /// General method that gets a collection of actual diagnostics found in the source after the analyzer is run, 
-        /// then verifies each of them.
+        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証する内部メソッドです。
         /// </summary>
-        /// <param name="sources">An array of strings to create source documents from to run the analyzers on</param>
-        /// <param name="analyzer">The analyzer to be run on the source code</param>
-        /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources</param>
         private void VerifyDiagnostics(string[] sources, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expected)
         {
             var diagnostics = GetSortedDiagnostics(sources, analyzer);
@@ -56,12 +50,8 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// Checks each of the actual Diagnostics found and compares them with the corresponding DiagnosticResult in the array of expected results.
-        /// Diagnostics are considered equal only if the DiagnosticResultLocation, Id, Severity, and Message of the DiagnosticResult match the actual diagnostic.
+        /// 診断結果を比較して、期待する結果かどうかを検証します。
         /// </summary>
-        /// <param name="actualResults">The Diagnostics found by the compiler after running the analyzer on the source code</param>
-        /// <param name="analyzer">The analyzer that was being run on the sources</param>
-        /// <param name="expectedResults">Diagnostic Results that should have appeared in the code</param>
         private static void VerifyDiagnosticResults(Diagnostic[] actualResults, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expectedResults)
         {
             int expectedCount = expectedResults.Length;
@@ -132,12 +122,8 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// Helper method to VerifyDiagnosticResult that checks the location of a diagnostic and compares it with the location in the expected DiagnosticResult.
+        /// 診断結果のソースコードの位置を検証する内部メソッドです。
         /// </summary>
-        /// <param name="analyzer">The analyzer that was being run on the sources</param>
-        /// <param name="diagnostic">The diagnostic that was found in the code</param>
-        /// <param name="actual">The Location of the Diagnostic found in the code</param>
-        /// <param name="expected">The DiagnosticResultLocation that should have been found</param>
         private static void VerifyDiagnosticLocation(DiagnosticAnalyzer analyzer, Diagnostic diagnostic, Location actual, DiagnosticResultLocation expected)
         {
             var actualSpan = actual.GetLineSpan();
@@ -172,11 +158,8 @@ namespace TestHelper
         }
 
         /// <summary>
-        /// Helper method to format a Diagnostic into an easily readable string
+        /// 診断結果を文字列に整えます。
         /// </summary>
-        /// <param name="analyzer">The analyzer that this verifier tests</param>
-        /// <param name="diagnostics">The Diagnostics to be formatted</param>
-        /// <returns>The Diagnostics formatted as a string</returns>
         private static string FormatDiagnostics(DiagnosticAnalyzer analyzer, params Diagnostic[] diagnostics)
         {
             var builder = new StringBuilder();

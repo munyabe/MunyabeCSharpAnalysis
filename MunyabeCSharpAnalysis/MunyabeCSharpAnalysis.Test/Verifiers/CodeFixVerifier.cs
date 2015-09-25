@@ -11,44 +11,33 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace TestHelper
 {
     /// <summary>
-    /// Superclass of all Unit tests made for diagnostics with codefixes.
-    /// Contains methods used to verify correctness of codefixes
+    /// <see cref="CodeFixProvider"/>によるコードの修正をテストする基底クラスです。
     /// </summary>
     public abstract partial class CodeFixVerifier : DiagnosticVerifier
     {
         /// <summary>
-        /// Returns the codefix being tested (C#) - to be implemented in non-abstract class
+        /// テスト対象の<see cref="CodeFixProvider"/>のインスタンスを取得します。
         /// </summary>
-        /// <returns>The CodeFixProvider to be used for CSharp code</returns>
         protected virtual CodeFixProvider GetCodeFixProvider()
         {
             return null;
         }
 
         /// <summary>
-        /// Called to test a C# codefix when applied on the inputted string as a source
+        /// <see cref="CodeFixProvider"/>によるコードの修正を検証します。
         /// </summary>
-        /// <param name="oldSource">A class in the form of a string before the CodeFix was applied to it</param>
-        /// <param name="newSource">A class in the form of a string after the CodeFix was applied to it</param>
-        /// <param name="codeFixIndex">Index determining which codefix to apply if there are multiple</param>
-        /// <param name="allowNewCompilerDiagnostics">A bool controlling whether or not the test will fail if the CodeFix introduces other warnings after being applied</param>
+        /// <param name="oldSource">修正前のソースコード</param>
+        /// <param name="newSource">修正後のソースコード</param>
+        /// <param name="codeFixIndex">修正する箇所か複数ある場合に、それを特定するインデックス</param>
+        /// <param name="allowNewCompilerDiagnostics">修正後に他の警告がある場合、テストを失敗させる場合は<see langword="true"/></param>
         protected void VerifyFix(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false)
         {
             VerifyFix(GetDiagnosticAnalyzer(), GetCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
         }
 
         /// <summary>
-        /// General verifier for codefixes.
-        /// Creates a Document from the source string, then gets diagnostics on it and applies the relevant codefixes.
-        /// Then gets the string after the codefix is applied and compares it with the expected result.
-        /// Note: If any codefix causes new diagnostics to show up, the test fails unless allowNewCompilerDiagnostics is set to true.
+        /// <see cref="CodeFixProvider"/>によるコードの修正を検証する内部メソッドです。
         /// </summary>
-        /// <param name="analyzer">The analyzer to be applied to the source code</param>
-        /// <param name="codeFixProvider">The codefix to be applied to the code wherever the relevant Diagnostic is found</param>
-        /// <param name="oldSource">A class in the form of a string before the CodeFix was applied to it</param>
-        /// <param name="newSource">A class in the form of a string after the CodeFix was applied to it</param>
-        /// <param name="codeFixIndex">Index determining which codefix to apply if there are multiple</param>
-        /// <param name="allowNewCompilerDiagnostics">A bool controlling whether or not the test will fail if the CodeFix introduces other warnings after being applied</param>
         private void VerifyFix(DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string oldSource, string newSource, int? codeFixIndex, bool allowNewCompilerDiagnostics)
         {
             var document = CreateDocument(oldSource);
