@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -22,17 +21,6 @@ namespace TestHelper
 
         internal static string DefaultFilePathPrefix = "Test";
         internal static string TestProjectName = "TestProject";
-
-        /// <summary>
-        /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return the diagnostics found in the string after converting it to a document.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <param name="analyzer">The analyzer to be run on the sources</param>
-        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-        private static Diagnostic[] GetSortedDiagnostics(string[] sources, DiagnosticAnalyzer analyzer)
-        {
-            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources));
-        }
 
         /// <summary>
         /// 指定の<see cref="DiagnosticAnalyzer"/>でドキュメントを診断した結果を取得します。
@@ -74,47 +62,9 @@ namespace TestHelper
                 }
             }
 
-            var results = SortDiagnostics(diagnostics);
+            var results = diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
             diagnostics.Clear();
             return results;
-        }
-
-        /// <summary>
-        /// Sort diagnostics by location in source document
-        /// </summary>
-        /// <param name="diagnostics">The list of Diagnostics to be sorted</param>
-        /// <returns>An IEnumerable containing the Diagnostics in order of Location</returns>
-        private static Diagnostic[] SortDiagnostics(IEnumerable<Diagnostic> diagnostics)
-        {
-            return diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
-        }
-
-        /// <summary>
-        /// Given an array of strings as sources and a language, turn them into a project and return the documents and spans of it.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant</returns>
-        private static Document[] GetDocuments(string[] sources)
-        {
-            var project = CreateProject(sources);
-            var documents = project.Documents.ToArray();
-
-            if (sources.Length != documents.Length)
-            {
-                throw new SystemException("Amount of sources did not match amount of Documents created");
-            }
-
-            return documents;
-        }
-
-        /// <summary>
-        /// Create a Document from a string through creating a project that contains it.
-        /// </summary>
-        /// <param name="source">Classes in the form of a string</param>
-        /// <returns>A Document created from the source string</returns>
-        protected static Document CreateDocument(string source)
-        {
-            return CreateProject(new[] { source }).Documents.First();
         }
 
         /// <summary>
@@ -122,7 +72,7 @@ namespace TestHelper
         /// </summary>
         /// <param name="sources">プロジェクトに含めるソースコードの一覧</param>
         /// <returns>作成したプロジェクト</returns>
-        private static Project CreateProject(string[] sources)
+        protected static Project CreateProject(string[] sources)
         {
             string fileNamePrefix = DefaultFilePathPrefix;
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);

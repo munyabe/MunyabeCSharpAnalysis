@@ -4,7 +4,6 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,15 +31,10 @@ namespace TestHelper
         /// <param name="allowNewCompilerDiagnostics">修正後に他の警告がある場合、テストを失敗させる場合は<see langword="true"/></param>
         protected void VerifyFix(string oldSource, string newSource, int? codeFixIndex = null, bool allowNewCompilerDiagnostics = false)
         {
-            VerifyFix(GetDiagnosticAnalyzer(), GetCodeFixProvider(), oldSource, newSource, codeFixIndex, allowNewCompilerDiagnostics);
-        }
+            var analyzer = GetDiagnosticAnalyzer();
+            var codeFixProvider = GetCodeFixProvider();
 
-        /// <summary>
-        /// <see cref="CodeFixProvider"/>によるコードの修正を検証する内部メソッドです。
-        /// </summary>
-        private void VerifyFix(DiagnosticAnalyzer analyzer, CodeFixProvider codeFixProvider, string oldSource, string newSource, int? codeFixIndex, bool allowNewCompilerDiagnostics)
-        {
-            var document = CreateDocument(oldSource);
+            var document = CreateProject(new[] { oldSource }).Documents.First();
             var analyzerDiagnostics = GetSortedDiagnosticsFromDocuments(analyzer, new[] { document });
             var compilerDiagnostics = GetCompilerDiagnostics(document);
             var attempts = analyzerDiagnostics.Length;

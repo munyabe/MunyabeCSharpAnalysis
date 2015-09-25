@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -45,7 +44,8 @@ namespace TestHelper
         /// </summary>
         private void VerifyDiagnostics(string[] sources, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expected)
         {
-            var diagnostics = GetSortedDiagnostics(sources, analyzer);
+            var documents = CreateProject(sources).Documents.ToArray();
+            var diagnostics = GetSortedDiagnosticsFromDocuments(analyzer, documents);
             VerifyDiagnosticResults(diagnostics, analyzer, expected);
         }
 
