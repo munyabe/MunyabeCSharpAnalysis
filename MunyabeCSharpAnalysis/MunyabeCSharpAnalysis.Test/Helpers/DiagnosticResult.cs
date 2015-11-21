@@ -123,7 +123,7 @@ namespace TestHelper
         /// <param name="message">解析結果のメッセージ</param>
         /// <param name="severity">解析したルールの重大度</param>
         /// <param name="locations">解析結果が示すソースコードの位置</param>
-        public DiagnosticResult(string id, string message, DiagnosticSeverity severity, DiagnosticResultLocation[] locations)
+        public DiagnosticResult(string id, string message, DiagnosticSeverity severity, params DiagnosticResultLocation[] locations)
         {
             Id = id;
             Message = message;
