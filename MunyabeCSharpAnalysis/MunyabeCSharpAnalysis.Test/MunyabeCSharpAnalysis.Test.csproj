@@ -104,6 +104,7 @@
   <ItemGroup>
     <Compile Include="Analyzers\Performance\AvoidEnumHasFlagAnalyzerTest.cs" />
     <Compile Include="Bases\CodeFixVerifier.cs" />
+    <Compile Include="Bases\DiagnosticResultLocation.cs" />
     <Compile Include="Bases\DiagnosticVerifier.cs" />
     <Compile Include="Bases\DiagnosticResult.cs" />
     <Compile Include="Bases\DiagnosticVerifier.Helper.cs" />
