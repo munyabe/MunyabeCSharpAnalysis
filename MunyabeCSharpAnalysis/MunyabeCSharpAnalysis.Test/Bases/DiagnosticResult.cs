@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.CodeAnalysis;
 
-namespace TestHelper
+namespace Munyabe.CSharp.Analysis.Test.Bases
 {
     /// <summary>
     /// ソースコードの位置を表す構造体です。

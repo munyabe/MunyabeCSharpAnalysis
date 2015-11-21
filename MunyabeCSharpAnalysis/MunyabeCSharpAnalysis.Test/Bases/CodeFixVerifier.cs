@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TestHelper
+namespace Munyabe.CSharp.Analysis.Test.Bases
 {
     /// <summary>
     /// <see cref="CodeFixProvider"/>によるコードの修正をテストする基底クラスです。

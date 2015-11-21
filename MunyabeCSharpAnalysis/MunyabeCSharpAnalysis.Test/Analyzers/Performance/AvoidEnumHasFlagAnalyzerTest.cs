@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Munyabe.CSharp.Analysis.Analyzers.Performance;
-using TestHelper;
+using Munyabe.CSharp.Analysis.Test.Bases;
 
 namespace Munyabe.CSharp.Analysis.Test.Analyzers.Performance
 {

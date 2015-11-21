@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace TestHelper
+namespace Munyabe.CSharp.Analysis.Test.Bases
 {
     /// <summary>
     /// <see cref="DiagnosticAnalyzer"/>によるコードの診断をテストする基底クラスです。

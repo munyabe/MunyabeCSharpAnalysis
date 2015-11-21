@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace TestHelper
+namespace Munyabe.CSharp.Analysis.Test.Bases
 {
     /// <summary>
     /// Class for turning strings into documents and getting the diagnostics on them

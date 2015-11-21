@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Simplification;
 
-namespace TestHelper
+namespace Munyabe.CSharp.Analysis.Test.Bases
 {
     /// <summary>
     /// <see cref="Document"/>の拡張メソッドを定義するクラスです。
