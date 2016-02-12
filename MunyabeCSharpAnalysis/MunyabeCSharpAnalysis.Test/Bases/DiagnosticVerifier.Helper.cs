@@ -62,9 +62,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
                 }
             }
 
-            var results = diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
-            diagnostics.Clear();
-            return results;
+            return diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
         }
 
         /// <summary>
