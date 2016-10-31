@@ -25,6 +25,15 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <summary>
         /// インスタンスを初期化します。
         /// </summary>
+        /// <param name="line">行数</param>
+        /// <param name="column">列数</param>
+        public DiagnosticResultLocation(int line, int column) : this(string.Empty, line, column)
+        {
+        }
+
+        /// <summary>
+        /// インスタンスを初期化します。
+        /// </summary>
         /// <param name="path">ファイルパス</param>
         /// <param name="line">行数</param>
         /// <param name="column">列数</param>

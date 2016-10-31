@@ -33,8 +33,36 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <param name="expected">診断結果の期待値</param>
         protected void VerifyDiagnostic(string[] sources, params DiagnosticResult[] expected)
         {
+            VerifyDiagnosticInternal(CreateProject(sources), expected);
+        }
+
+        /// <summary>
+        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証します。
+        /// </summary>
+        /// <param name="source">解析対象のソースコードファイル</param>
+        /// <param name="expected">診断結果の期待値</param>
+        protected void VerifyDiagnosticFromFile(string source, params DiagnosticResult[] expected)
+        {
+            VerifyDiagnosticFromFile(new[] { source }, expected);
+        }
+
+        /// <summary>
+        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証します。
+        /// </summary>
+        /// <param name="sources">解析対象のソースコードファイル一覧</param>
+        /// <param name="expected">診断結果の期待値</param>
+        protected void VerifyDiagnosticFromFile(string[] sources, params DiagnosticResult[] expected)
+        {
+            VerifyDiagnosticInternal(CreateProjectFromFile(sources), expected);
+        }
+
+        /// <summary>
+        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証する内部メソッドです。
+        /// </summary>
+        private void VerifyDiagnosticInternal(Project project, params DiagnosticResult[] expected)
+        {
             var analyzer = GetDiagnosticAnalyzer();
-            var documents = CreateProject(sources).Documents.ToArray();
+            var documents = project.Documents.ToArray();
             var diagnostics = GetSortedDiagnosticsFromDocuments(analyzer, documents);
             VerifyDiagnosticResults(diagnostics, analyzer, expected);
         }
@@ -118,7 +146,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         {
             var actualSpan = actual.GetLineSpan();
 
-            Assert.IsTrue(actualSpan.Path == expected.Path || (actualSpan.Path != null && actualSpan.Path.Contains("Test0.") && expected.Path.Contains("Test.")),
+            Assert.IsTrue(string.IsNullOrEmpty(expected.Path) || actualSpan.Path == expected.Path,
                 string.Format("Expected diagnostic to be in file \"{0}\" was actually in file \"{1}\"\r\n\r\nDiagnostic:\r\n    {2}\r\n",
                     expected.Path, actualSpan.Path, FormatDiagnostics(analyzer, diagnostic)));
 

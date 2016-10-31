@@ -102,6 +102,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyzers\Performance\AvoidEnumHasFlagAnalyzerTarget.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
     <Compile Include="Analyzers\Performance\AvoidEnumHasFlagAnalyzerTest.cs" />
     <Compile Include="Bases\CodeFixVerifier.cs" />
     <Compile Include="Bases\DiagnosticResultLocation.cs" />

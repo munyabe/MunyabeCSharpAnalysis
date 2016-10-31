@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -73,14 +74,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         protected static Project CreateProject(string[] sources)
         {
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
-
-            var solution = new AdhocWorkspace()
-                .CurrentSolution
-                .AddProject(projectId, TestProjectName, TestProjectName, LanguageNames.CSharp)
-                .AddMetadataReference(projectId, CorlibReference)
-                .AddMetadataReference(projectId, SystemCoreReference)
-                .AddMetadataReference(projectId, CSharpSymbolsReference)
-                .AddMetadataReference(projectId, CodeAnalysisReference);
+            var solution = CreateSolution(projectId);
 
             var count = 0;
             foreach (var source in sources)
@@ -91,6 +85,43 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
                 count++;
             }
             return solution.GetProject(projectId);
+        }
+
+        /// <summary>
+        /// 指定の C# のソースコードファイルを含んだプロジェクトを作成します。
+        /// </summary>
+        /// <param name="files">プロジェクトに含めるソースコードファイルの一覧</param>
+        /// <returns>作成したプロジェクト</returns>
+        protected static Project CreateProjectFromFile(string[] files)
+        {
+            var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
+            var solution = CreateSolution(projectId);
+
+            foreach (var filePath in files)
+            {
+                var documentId = DocumentId.CreateNewId(projectId, debugName: filePath);
+
+                using (var reader = new StreamReader(filePath))
+                {
+                    solution = solution.AddDocument(documentId, filePath, SourceText.From(reader.BaseStream));
+                }
+            }
+
+            return solution.GetProject(projectId);
+        }
+
+        /// <summary>
+        /// ソリューションを作成します。
+        /// </summary>
+        private static Solution CreateSolution(ProjectId projectId)
+        {
+            return new AdhocWorkspace()
+                .CurrentSolution
+                .AddProject(projectId, TestProjectName, TestProjectName, LanguageNames.CSharp)
+                .AddMetadataReference(projectId, CorlibReference)
+                .AddMetadataReference(projectId, SystemCoreReference)
+                .AddMetadataReference(projectId, CSharpSymbolsReference)
+                .AddMetadataReference(projectId, CodeAnalysisReference);
         }
     }
 }

@@ -15,33 +15,13 @@ namespace Munyabe.CSharp.Analysis.Test.Analyzers.Performance
         [TestMethod]
         public void AnalyzeViolation()
         {
-            var test = @"using System;
-
-namespace AnalyzerSample.Test.Performance
-{
-    class AvoidEnumHasFlagAnalyzerTestTarget
-    {
-        public bool Method()
-        {
-            return TestEnum.Hoge.HasFlag(TestEnum.Fuga);
-        }
-    }
-
-    [Flags]
-    enum TestEnum
-    {
-        Hoge,
-        Fuga
-    }
-}";
-
             var expected = new DiagnosticResult(
                 AvoidEnumHasFlagAnalyzer.DiagnosticId,
                 "Avoid Enum.HasFlag prefer bit operator",
                 DiagnosticSeverity.Warning,
-                new DiagnosticResultLocation("Test0.cs", 9, 20));
+                new DiagnosticResultLocation(9, 20));
 
-            VerifyDiagnostic(test, expected);
+            VerifyDiagnosticFromFile(@"Analyzers\Performance\AvoidEnumHasFlagAnalyzerTarget.cs", expected);
         }
 
         /// <inheritdoc />
