@@ -14,10 +14,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <summary>
         /// テスト対象の<see cref="DiagnosticAnalyzer"/>のインスタンスを取得します。
         /// </summary>
-        protected virtual DiagnosticAnalyzer GetDiagnosticAnalyzer()
-        {
-            return null;
-        }
+        protected abstract DiagnosticAnalyzer GetDiagnosticAnalyzer();
 
         /// <summary>
         /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証します。
@@ -54,18 +51,18 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// </summary>
         private static void VerifyDiagnosticResults(Diagnostic[] actualResults, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expectedResults)
         {
-            int expectedCount = expectedResults.Length;
-            int actualCount = actualResults.Length;
+            var expectedCount = expectedResults.Length;
+            var actualCount = actualResults.Length;
 
             if (expectedCount != actualCount)
             {
-                string diagnosticsOutput = actualResults.Any() ? FormatDiagnostics(analyzer, actualResults) : "    NONE.";
+                var diagnosticsOutput = actualResults.Any() ? FormatDiagnostics(analyzer, actualResults) : "    NONE.";
 
                 Assert.IsTrue(false,
                     string.Format("Mismatch between number of diagnostics returned, expected \"{0}\" actual \"{1}\"\r\n\r\nDiagnostics:\r\n{2}\r\n", expectedCount, actualCount, diagnosticsOutput));
             }
 
-            for (int i = 0; i < expectedResults.Length; i++)
+            for (var i = 0; i < expectedResults.Length; i++)
             {
                 var actual = actualResults[i];
                 var expected = expectedResults[i];
@@ -92,7 +89,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
                                 FormatDiagnostics(analyzer, actual)));
                     }
 
-                    for (int j = 0; j < additionalLocations.Count; ++j)
+                    for (var j = 0; j < additionalLocations.Count; ++j)
                     {
                         VerifyDiagnosticLocation(analyzer, actual, additionalLocations[j], expected.Locations[j + 1]);
                     }
@@ -163,7 +160,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         private static string FormatDiagnostics(DiagnosticAnalyzer analyzer, params Diagnostic[] diagnostics)
         {
             var builder = new StringBuilder();
-            for (int i = 0; i < diagnostics.Length; ++i)
+            for (var i = 0; i < diagnostics.Length; ++i)
             {
                 builder.AppendLine("// " + diagnostics[i].ToString());
 

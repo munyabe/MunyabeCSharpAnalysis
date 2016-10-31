@@ -19,8 +19,8 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         private static readonly MetadataReference CSharpSymbolsReference = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
         private static readonly MetadataReference CodeAnalysisReference = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
 
-        internal static string DefaultFilePathPrefix = "Test";
-        internal static string TestProjectName = "TestProject";
+        internal const string DefaultFilePathPrefix = "Test";
+        internal const string TestProjectName = "TestProject";
 
         /// <summary>
         /// 指定の<see cref="DiagnosticAnalyzer"/>でドキュメントを診断した結果を取得します。
@@ -72,7 +72,6 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <returns>作成したプロジェクト</returns>
         protected static Project CreateProject(string[] sources)
         {
-            string fileNamePrefix = DefaultFilePathPrefix;
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
 
             var solution = new AdhocWorkspace()
@@ -83,10 +82,10 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
                 .AddMetadataReference(projectId, CodeAnalysisReference);
 
-            int count = 0;
+            var count = 0;
             foreach (var source in sources)
             {
-                var newFileName = fileNamePrefix + count + ".cs";
+                var newFileName = DefaultFilePathPrefix + count + ".cs";
                 var documentId = DocumentId.CreateNewId(projectId, debugName: newFileName);
                 solution = solution.AddDocument(documentId, newFileName, SourceText.From(source));
                 count++;
