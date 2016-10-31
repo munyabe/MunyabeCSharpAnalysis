@@ -23,7 +23,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <param name="expected">診断結果の期待値</param>
         protected void VerifyDiagnostic(string source, params DiagnosticResult[] expected)
         {
-            VerifyDiagnostics(new[] { source }, GetDiagnosticAnalyzer(), expected);
+            VerifyDiagnostic(new[] { source }, expected);
         }
 
         /// <summary>
@@ -33,14 +33,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <param name="expected">診断結果の期待値</param>
         protected void VerifyDiagnostic(string[] sources, params DiagnosticResult[] expected)
         {
-            VerifyDiagnostics(sources, GetDiagnosticAnalyzer(), expected);
-        }
-
-        /// <summary>
-        /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証する内部メソッドです。
-        /// </summary>
-        private void VerifyDiagnostics(string[] sources, DiagnosticAnalyzer analyzer, params DiagnosticResult[] expected)
-        {
+            var analyzer = GetDiagnosticAnalyzer();
             var documents = CreateProject(sources).Documents.ToArray();
             var diagnostics = GetSortedDiagnosticsFromDocuments(analyzer, documents);
             VerifyDiagnosticResults(diagnostics, analyzer, expected);
