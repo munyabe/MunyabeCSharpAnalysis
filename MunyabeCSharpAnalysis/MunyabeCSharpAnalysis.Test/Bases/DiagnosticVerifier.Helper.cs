@@ -31,39 +31,23 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <returns>ソースコードの位置でソートされた診断結果の一覧</returns>
         protected static Diagnostic[] GetSortedDiagnosticsFromDocuments(DiagnosticAnalyzer analyzer, Document[] documents)
         {
-            var projects = new HashSet<Project>();
-            foreach (var document in documents)
-            {
-                projects.Add(document.Project);
-            }
-
-            var diagnostics = new List<Diagnostic>();
-            foreach (var project in projects)
-            {
-                var compilationWithAnalyzers = project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer));
-                var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
-                foreach (var diag in diags)
+            return documents
+                .Select(document => document.Project)
+                .Distinct()
+                .SelectMany(project => project.GetCompilationAsync().Result.WithAnalyzers(ImmutableArray.Create(analyzer)).GetAnalyzerDiagnosticsAsync().Result)
+                .Where(diag =>
                 {
                     if (diag.Location == Location.None || diag.Location.IsInMetadata)
                     {
-                        diagnostics.Add(diag);
+                        return true;
                     }
-                    else
-                    {
-                        for (int i = 0; i < documents.Length; i++)
-                        {
-                            var document = documents[i];
-                            var tree = document.GetSyntaxTreeAsync().Result;
-                            if (tree == diag.Location.SourceTree)
-                            {
-                                diagnostics.Add(diag);
-                            }
-                        }
-                    }
-                }
-            }
 
-            return diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
+                    return documents
+                        .Select(document => document.GetSyntaxTreeAsync().Result)
+                        .Any(tree => tree == diag.Location.SourceTree);
+                })
+                .OrderBy(diag => diag.Location.SourceSpan.Start)
+                .ToArray();
         }
 
         /// <summary>
