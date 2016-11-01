@@ -75,11 +75,8 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
             var expectedCount = expectedResults.Length;
             var actualCount = actualResults.Length;
 
-            if (expectedCount != actualCount)
-            {
-                Assert.IsTrue(false,
-                    string.Format("Mismatch between number of diagnostics returned, expected '{0}' actual '{1}'\r\n\r\nDiagnostics:\r\n{2}", expectedCount, actualCount, FormatDiagnostics(analyzer, actualResults)));
-            }
+            Assert.AreEqual(expectedCount, actualCount,
+                string.Format("Mismatch between number of diagnostics returned, expected '{0}' actual '{1}'\r\n\r\nDiagnostics:\r\n{2}", expectedCount, actualCount, FormatDiagnostics(analyzer, actualResults)));
 
             for (var i = 0; i < expectedResults.Length; i++)
             {
@@ -88,25 +85,17 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
 
                 if (expected.Line == -1 && expected.Column == -1)
                 {
-                    if (actual.Location != Location.None)
-                    {
-                        Assert.IsTrue(false,
-                            string.Format("Expected:\nA project diagnostic with No location\nActual:\n{0}",
-                            FormatDiagnostics(analyzer, actual)));
-                    }
+                    Assert.AreEqual(Location.None, actual.Location,
+                        string.Format("Expected:\nA project diagnostic with No location\nActual:\n{0}", FormatDiagnostics(analyzer, actual)));
                 }
                 else
                 {
                     VerifyDiagnosticLocation(analyzer, actual, actual.Location, expected.Locations.First());
                     var additionalLocations = actual.AdditionalLocations;
 
-                    if (additionalLocations.Count != expected.Locations.Length - 1)
-                    {
-                        Assert.IsTrue(false,
-                            string.Format("Expected {0} additional locations but got {1} for Diagnostic:\r\n    {2}",
-                                expected.Locations.Length - 1, additionalLocations.Count,
-                                FormatDiagnostics(analyzer, actual)));
-                    }
+                    Assert.AreEqual(expected.Locations.Length - 1, additionalLocations.Count,
+                        string.Format("Expected {0} additional locations but got {1} for Diagnostic:\r\n    {2}",
+                            expected.Locations.Length - 1, additionalLocations.Count, FormatDiagnostics(analyzer, actual)));
 
                     for (var j = 0; j < additionalLocations.Count; ++j)
                     {
@@ -115,23 +104,14 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
                 }
 
                 const string MESSAGE_FORMAT = "Expected diagnostic {0} to be '{1}' was '{2}'\r\n\r\nDiagnostic:\r\n    {3}";
-                if (actual.Id != expected.Id)
-                {
-                    Assert.IsTrue(false,
-                        string.Format(MESSAGE_FORMAT, "id", expected.Id, actual.Id, FormatDiagnostics(analyzer, actual)));
-                }
+                Assert.AreEqual(expected.Id, actual.Id,
+                    string.Format(MESSAGE_FORMAT, "id", expected.Id, actual.Id, FormatDiagnostics(analyzer, actual)));
 
-                if (actual.Severity != expected.Severity)
-                {
-                    Assert.IsTrue(false,
-                        string.Format(MESSAGE_FORMAT, "severity", expected.Severity, actual.Severity, FormatDiagnostics(analyzer, actual)));
-                }
+                Assert.AreEqual(expected.Severity, actual.Severity,
+                    string.Format(MESSAGE_FORMAT, "severity", expected.Severity, actual.Severity, FormatDiagnostics(analyzer, actual)));
 
-                if (actual.GetMessage() != expected.Message)
-                {
-                    Assert.IsTrue(false,
-                        string.Format(MESSAGE_FORMAT, "message", expected.Message, actual.GetMessage(), FormatDiagnostics(analyzer, actual)));
-                }
+                Assert.AreEqual(expected.Message, actual.GetMessage(),
+                    string.Format(MESSAGE_FORMAT, "message", expected.Message, actual.GetMessage(), FormatDiagnostics(analyzer, actual)));
             }
         }
 
@@ -148,24 +128,16 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
 
             var actualLinePosition = actualSpan.StartLinePosition;
 
-            // Only check line position if there is an actual line in the real diagnostic
             if (actualLinePosition.Line > 0)
             {
-                if (actualLinePosition.Line + 1 != expected.Line)
-                {
-                    Assert.IsTrue(false,
-                        string.Format(MESSAGE_FORMAT, "on line", expected.Line, actualLinePosition.Line + 1, FormatDiagnostics(analyzer, diagnostic)));
-                }
+                Assert.AreEqual(expected.Line, actualLinePosition.Line + 1,
+                    string.Format(MESSAGE_FORMAT, "on line", expected.Line, actualLinePosition.Line + 1, FormatDiagnostics(analyzer, diagnostic)));
             }
 
-            // Only check column position if there is an actual column position in the real diagnostic
             if (actualLinePosition.Character > 0)
             {
-                if (actualLinePosition.Character + 1 != expected.Column)
-                {
-                    Assert.IsTrue(false,
-                        string.Format(MESSAGE_FORMAT, "at column", expected.Column, actualLinePosition.Character + 1, FormatDiagnostics(analyzer, diagnostic)));
-                }
+                Assert.AreEqual(expected.Column, actualLinePosition.Character + 1,
+                    string.Format(MESSAGE_FORMAT, "at column", expected.Column, actualLinePosition.Character + 1, FormatDiagnostics(analyzer, diagnostic)));
             }
         }
 
