@@ -26,7 +26,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <summary>
         /// 解析したルールの重大度を取得します。
         /// </summary>
-        public DiagnosticSeverity Severity { get; }
+        public DiagnosticSeverity? Severity { get; }
 
         /// <summary>
         /// 解析したルールの識別子を取得します。
@@ -75,6 +75,16 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// インスタンスを初期化します。
         /// </summary>
         /// <param name="id">解析したルールの識別子</param>
+        /// <param name="locations">解析結果が示すソースコードの位置</param>
+        public DiagnosticResult(string id, params DiagnosticResultLocation[] locations)
+            : this(id, string.Empty, null, locations)
+        {
+        }
+
+        /// <summary>
+        /// インスタンスを初期化します。
+        /// </summary>
+        /// <param name="id">解析したルールの識別子</param>
         /// <param name="severity">解析したルールの重大度</param>
         /// <param name="locations">解析結果が示すソースコードの位置</param>
         public DiagnosticResult(string id, DiagnosticSeverity severity, params DiagnosticResultLocation[] locations)
@@ -89,7 +99,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <param name="message">解析結果のメッセージ</param>
         /// <param name="severity">解析したルールの重大度</param>
         /// <param name="locations">解析結果が示すソースコードの位置</param>
-        public DiagnosticResult(string id, string message, DiagnosticSeverity severity, params DiagnosticResultLocation[] locations)
+        public DiagnosticResult(string id, string message, DiagnosticSeverity? severity, params DiagnosticResultLocation[] locations)
         {
             Id = id;
             Message = message;
