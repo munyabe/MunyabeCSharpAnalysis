@@ -17,7 +17,6 @@ namespace Munyabe.CSharp.Analysis.Test.Analyzers.Performance
         {
             var expected = new DiagnosticResult(
                 AvoidEnumHasFlagAnalyzer.DiagnosticId,
-                "Avoid Enum.HasFlag prefer bit operator",
                 DiagnosticSeverity.Warning,
                 new DiagnosticResultLocation(9, 20));
 

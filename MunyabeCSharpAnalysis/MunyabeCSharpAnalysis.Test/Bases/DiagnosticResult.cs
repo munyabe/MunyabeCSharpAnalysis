@@ -75,6 +75,17 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// インスタンスを初期化します。
         /// </summary>
         /// <param name="id">解析したルールの識別子</param>
+        /// <param name="severity">解析したルールの重大度</param>
+        /// <param name="locations">解析結果が示すソースコードの位置</param>
+        public DiagnosticResult(string id, DiagnosticSeverity severity, params DiagnosticResultLocation[] locations)
+            : this(id, string.Empty, severity, locations)
+        {
+        }
+
+        /// <summary>
+        /// インスタンスを初期化します。
+        /// </summary>
+        /// <param name="id">解析したルールの識別子</param>
         /// <param name="message">解析結果のメッセージ</param>
         /// <param name="severity">解析したルールの重大度</param>
         /// <param name="locations">解析結果が示すソースコードの位置</param>

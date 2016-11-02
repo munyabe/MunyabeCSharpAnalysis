@@ -110,8 +110,11 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
                 Assert.AreEqual(expected.Severity, actual.Severity,
                     string.Format(MESSAGE_FORMAT, "severity", expected.Severity, actual.Severity, FormatDiagnostics(analyzer, actual)));
 
-                Assert.AreEqual(expected.Message, actual.GetMessage(),
-                    string.Format(MESSAGE_FORMAT, "message", expected.Message, actual.GetMessage(), FormatDiagnostics(analyzer, actual)));
+                if (string.IsNullOrEmpty(expected.Message) == false)
+                {
+                    Assert.AreEqual(expected.Message, actual.GetMessage(),
+                        string.Format(MESSAGE_FORMAT, "message", expected.Message, actual.GetMessage(), FormatDiagnostics(analyzer, actual)));
+                }
             }
         }
 
