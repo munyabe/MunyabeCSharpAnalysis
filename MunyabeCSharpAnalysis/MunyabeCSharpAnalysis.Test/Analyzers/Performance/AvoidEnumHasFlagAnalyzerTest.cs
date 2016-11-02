@@ -9,7 +9,7 @@ namespace Munyabe.CSharp.Analysis.Test.Analyzers.Performance
     /// <see cref="AvoidEnumHasFlagAnalyzer"/>をテストするクラスです。
     /// </summary>
     [TestClass]
-    public class AvoidEnumHasFlagAnalyzerTest : CodeFixVerifier
+    public class AvoidEnumHasFlagAnalyzerTest : DiagnosticVerifier
     {
         [TestMethod]
         public void AnalyzeViolation()

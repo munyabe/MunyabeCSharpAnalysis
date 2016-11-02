@@ -7,21 +7,10 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
     /// </summary>
     public struct DiagnosticResult
     {
-        private DiagnosticResultLocation[] _locations;
         /// <summary>
         /// 解析結果が示すソースコードの位置を取得します。
         /// </summary>
-        public DiagnosticResultLocation[] Locations
-        {
-            get
-            {
-                if (_locations == null)
-                {
-                    _locations = new DiagnosticResultLocation[] { };
-                }
-                return _locations;
-            }
-        }
+        public DiagnosticResultLocation[] Locations { get; }
 
         /// <summary>
         /// 解析したルールの重大度を取得します。
@@ -41,35 +30,17 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <summary>
         /// 解析対象のファイルパスを取得します。
         /// </summary>
-        public string Path
-        {
-            get
-            {
-                return Locations.Length > 0 ? Locations[0].Path : "";
-            }
-        }
+        public string Path => 0 < Locations.Length ? Locations[0].Path : string.Empty;
 
         /// <summary>
         /// 解析結果が示すソースコードの列数を取得します。
         /// </summary>
-        public int Column
-        {
-            get
-            {
-                return Locations.Length > 0 ? Locations[0].Column : -1;
-            }
-        }
+        public int Column => 0 < Locations.Length ? Locations[0].Column : -1;
 
         /// <summary>
         /// 解析結果が示すソースコードの行数を取得します。
         /// </summary>
-        public int Line
-        {
-            get
-            {
-                return Locations.Length > 0 ? Locations[0].Line : -1;
-            }
-        }
+        public int Line => 0 < Locations.Length ? Locations[0].Line : -1;
 
         /// <summary>
         /// インスタンスを初期化します。
@@ -104,7 +75,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
             Id = id;
             Message = message;
             Severity = severity;
-            _locations = locations;
+            Locations = locations ?? new DiagnosticResultLocation[0];
         }
     }
 }
