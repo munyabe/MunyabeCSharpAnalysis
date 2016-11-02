@@ -41,19 +41,25 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// </summary>
         /// <param name="source">解析対象のソースコードファイル</param>
         /// <param name="expected">診断結果の期待値</param>
+        /// <remarks>
+        /// 指定するファイルは出力ディレクトリーにコピーするようプロパティを変更してください。
+        /// </remarks>
         protected void VerifyDiagnosticFromFile(string source, params DiagnosticResult[] expected)
         {
-            VerifyDiagnosticFromFile(new[] { source }, expected);
+            VerifyDiagnosticFromFiles(new[] { source }, expected);
         }
 
         /// <summary>
         /// <see cref="DiagnosticAnalyzer"/>によるコードの診断を検証します。
         /// </summary>
-        /// <param name="sources">解析対象のソースコードファイル一覧</param>
+        /// <param name="sources">解析対象のソースコードファイルの一覧</param>
         /// <param name="expected">診断結果の期待値</param>
-        protected void VerifyDiagnosticFromFile(string[] sources, params DiagnosticResult[] expected)
+        /// <remarks>
+        /// 指定するファイルは出力ディレクトリーにコピーするようプロパティを変更してください。
+        /// </remarks>
+        protected void VerifyDiagnosticFromFiles(string[] sources, params DiagnosticResult[] expected)
         {
-            VerifyDiagnosticInternal(CreateProjectFromFile(sources), expected);
+            VerifyDiagnosticInternal(CreateProjectFromFiles(sources), expected);
         }
 
         /// <summary>

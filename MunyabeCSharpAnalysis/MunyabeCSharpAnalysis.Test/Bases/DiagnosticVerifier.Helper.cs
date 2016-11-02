@@ -76,7 +76,7 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// </summary>
         /// <param name="files">プロジェクトに含めるソースコードファイルの一覧</param>
         /// <returns>作成したプロジェクト</returns>
-        protected static Project CreateProjectFromFile(string[] files)
+        protected static Project CreateProjectFromFiles(string[] files)
         {
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
             var solution = CreateSolution(projectId);
