@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -57,14 +56,14 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <returns>作成したプロジェクト</returns>
         protected static Project CreateProject(string[] sources)
         {
-            var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
+            var projectId = ProjectId.CreateNewId(TestProjectName);
             var solution = CreateSolution(projectId);
 
             var count = 0;
             foreach (var source in sources)
             {
                 var newFileName = DefaultFilePathPrefix + count + ".cs";
-                var documentId = DocumentId.CreateNewId(projectId, debugName: newFileName);
+                var documentId = DocumentId.CreateNewId(projectId, newFileName);
                 solution = solution.AddDocument(documentId, newFileName, SourceText.From(source));
                 count++;
             }
@@ -78,12 +77,12 @@ namespace Munyabe.CSharp.Analysis.Test.Bases
         /// <returns>作成したプロジェクト</returns>
         protected static Project CreateProjectFromFiles(string[] files)
         {
-            var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
+            var projectId = ProjectId.CreateNewId(TestProjectName);
             var solution = CreateSolution(projectId);
 
             foreach (var filePath in files)
             {
-                var documentId = DocumentId.CreateNewId(projectId, debugName: filePath);
+                var documentId = DocumentId.CreateNewId(projectId, filePath);
 
                 using (var reader = new StreamReader(filePath))
                 {
